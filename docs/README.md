@@ -1,3 +1,3 @@
 # GitHub Pages
 
-Publish this directory through **Settings > Pages > Deploy from a branch > main > /docs**. The public URL will normally be `https://YOUR-USERNAME.github.io/YOUR-REPOSITORY/`.
+This is the GitHub Pages section which demonstrates this portfolio at: <a href="https://grhmmckean33.github.io/pay2key-scope-assessment/">Pay2Key Scope Assessment</a>
