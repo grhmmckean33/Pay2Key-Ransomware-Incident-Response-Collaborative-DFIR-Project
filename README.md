@@ -8,7 +8,7 @@
 [![Project](https://img.shields.io/badge/Project-Collaborative%20DFIR-blue)](#investigation-context)
 
 > **[View my HTML portfolio page](docs/index.html)**  
-> **[Open the client-ready incident report](reports/client-ready-incident-response-report.pdf)**
+> **[Open the client-ready incident report](reports/IR-2026-001_Pay2Key_Draft_v0.9.pdf)**
 
 
 ## Project Overview
