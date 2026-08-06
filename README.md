@@ -9,8 +9,6 @@
 
 [View the portfolio website](https://grhmmckean33.github.io/pay2key-scope-assessment//) | [Open the final team report](reports/IR-2026-001-Pay2Key-Final-Report.pdf)
 
-> Replace `YOUR-USERNAME` and `YOUR-REPOSITORY` after uploading. GitHub Pages should be configured to deploy from `main` and `/docs`.
-
 ## Project context
 
 This case study presents my individual contribution to a collaborative investigation based on a real-world Pay2Key ransomware scenario. It was completed as a structured SOC/DFIR training exercise using historical Microsoft Defender for Endpoint telemetry. Although the evidence covered a 30-day intrusion period, the work was not a delayed live response: the historical dataset was intentionally investigated after the event so analysts could reconstruct the full attack, validate findings and produce a professional incident-response report.
