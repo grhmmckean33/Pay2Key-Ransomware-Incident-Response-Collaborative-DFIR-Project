@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360">
+<style>.t{font:700 22px Arial;fill:#172033}.s{font:16px Arial;fill:#364154}.d{font:700 17px Arial;fill:#2457a6}.box{fill:#f4f7fb;stroke:#9fb0c8;stroke-width:2}.line{stroke:#2457a6;stroke-width:5}.dot{fill:#2457a6}</style>
+<text x="50" y="45" class="t">Documented Pay2Key Incident Timeline</text><line x1="105" y1="175" x2="1095" y2="175" class="line"/>
+<circle cx="150" cy="175" r="13" class="dot"/><rect x="55" y="205" width="270" height="105" rx="12" class="box"/><text x="75" y="235" class="d">28 February 2026</text><text x="75" y="265" class="s">Initial access via internet-facing RDP</text><text x="75" y="290" class="s">No MFA or account lockout</text>
+<circle cx="600" cy="175" r="13" class="dot"/><rect x="455" y="55" width="290" height="100" rx="12" class="box"/><text x="475" y="85" class="d">~30-day dwell time</text><text x="475" y="115" class="s">Credential collection, discovery</text><text x="475" y="140" class="s">and remote-access persistence</text>
+<circle cx="1050" cy="175" r="13" class="dot"/><rect x="880" y="205" width="270" height="105" rx="12" class="box"/><text x="900" y="235" class="d">30 March 2026</text><text x="900" y="265" class="s">Ransomware deployed</text><text x="900" y="290" class="s">763 files encrypted</text></svg>

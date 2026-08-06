@@ -1,0 +1,8 @@
+// Portfolio reconstruction: validates whether suspicious artefacts executed.
+let SuspiciousFiles = dynamic(["Synaptics.exe", "massscan_gui.exe"]);
+DeviceProcessEvents
+| where Timestamp between (datetime(2026-02-28) .. datetime(2026-03-31))
+| where FileName in~ (SuspiciousFiles)
+| project Timestamp, DeviceName, AccountName, FileName, ProcessCommandLine,
+          InitiatingProcessFileName, InitiatingProcessCommandLine, SHA256
+| order by Timestamp asc

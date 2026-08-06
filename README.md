@@ -1,732 +1,213 @@
-# Pay2Key Ransomware Investigation
-## Scope Assessment Analyst Portfolio — Graham McKean
+# My Scope Assessment Contribution: Pay2Key Ransomware Investigation
 
-[![Project Type](https://img.shields.io/badge/Project-Collaborative%20DFIR-blue)](#project-overview)
-[![Role](https://img.shields.io/badge/Role-Scope%20Assessment%20Analyst-purple)](#my-role)
-[![Platform](https://img.shields.io/badge/Platform-Microsoft%20Defender%20XDR-0078D4)](#tools-and-technologies)
-[![Language](https://img.shields.io/badge/Query%20Language-KQL-5C2D91)](#tools-and-technologies)
-[![Focus](https://img.shields.io/badge/Focus-Ransomware%20Investigation-red)](#incident-summary)
-[![Status](https://img.shields.io/badge/Status-Portfolio%20Case%20Study-success)](#portfolio-purpose)
+## Graham McKean — Junior SOC Analyst Portfolio Case Study
 
-> **Portfolio purpose:** This repository documents my individual contribution to a collaborative Digital Forensics and Incident Response investigation. It does not claim that I conducted the full investigation independently. My assigned responsibility was **scope assessment**, and my findings were combined with the work of other analysts to support the final incident report.
+[![Role](https://img.shields.io/badge/Role-Scope%20Assessment%20Analyst-purple)](#my-role-and-responsibility)
+[![Platform](https://img.shields.io/badge/Platform-Microsoft%20Defender%20XDR-0078D4)](#tools-i-used)
+[![Query Language](https://img.shields.io/badge/Query%20Language-KQL-5C2D91)](#queries-supporting-my-workstream)
+[![Project](https://img.shields.io/badge/Project-Collaborative%20DFIR-blue)](#investigation-context)
 
----
+> **[View my HTML portfolio page](docs/index.html)**  
+> **[Open the client-ready incident report](reports/client-ready-incident-response-report.pdf)**
 
-## Navigation
-
-- [Portfolio Purpose](#portfolio-purpose)
-- [Project Overview](#project-overview)
-- [Incident Summary](#incident-summary)
-- [My Role](#my-role)
-- [Team Structure](#team-structure)
-- [Investigation Workflow](#investigation-workflow)
-- [Scope Assessment Methodology](#scope-assessment-methodology)
-- [Key Findings](#key-findings)
-- [Synaptics.exe and massscan_gui.exe](#independent-findings-synapticsexe-and-massscan_guiexe)
-- [Evidence Flow](#evidence-flow)
-- [Attack Timeline](#attack-timeline)
-- [Network Layout](#network-layout)
-- [MITRE ATT&CK Mapping](#mitre-attck-mapping)
-- [Report Improvement Contribution](#report-improvement-contribution)
-- [Technical Skills](#technical-skills-demonstrated)
-- [Professional Skills](#professional-skills-demonstrated)
-- [Feedback and Development](#feedback-and-development)
-- [Screenshots and Evidence](#screenshots-and-evidence)
-- [Lessons Learned](#lessons-learned)
-- [Repository Structure](#recommended-repository-structure)
-- [Interview Talking Points](#interview-talking-points)
-- [Ethics and Disclosure](#ethics-and-disclosure)
-
----
-
-## Portfolio Purpose
-
-This case study is designed to demonstrate how I contributed to a professional-style, team-based cyber investigation. It focuses on:
-
-- Ownership of a defined investigative workstream.
-- Evidence-based incident scoping.
-- Collaboration with analysts responsible for other phases of the investigation.
-- Escalation of unexpected findings.
-- Clear communication of technical findings.
-- Contribution to a final client-ready incident report.
-- Reflection on feedback and continuous improvement.
-
-The investigation was conducted as part of the **MYDFIR SOC Simulation Lab** and involved a Pay2Key ransomware incident. The final team investigation produced a detailed incident response report supported by multiple evidence items, KQL queries, detections and threat-actor separation.
-
----
 
 ## Project Overview
+This portfolio project demonstrates my contribution as Scope Assessment Analyst during a collaborative Digital Forensics and Incident Response (DFIR) investigation based on a real-world Pay2Key ransomware incident.
 
-| Item | Detail |
-|---|---|
-| Case | IR-2026-001 |
-| Incident | Pay2Key ransomware |
-| Investigation period | 30 March–12 April 2026 |
-| Environment | Simulated enterprise environment |
-| Investigation model | Collaborative, role-based DFIR investigation |
-| My role | Scope Assessment Analyst |
-| Primary platform | Microsoft Defender XDR |
-| Primary query language | Kusto Query Language |
-| Main deliverables | Scope findings, supporting evidence and report feedback |
+The investigation was conducted as part of a structured SOC/DFIR training exercise using a historical incident dataset. Although the investigation began approximately 30 days after the initial compromise, this reflects the design of the exercise rather than a live response. The delayed investigation enabled analysts to work from a complete evidence set, replicate real-world forensic workflows, and produce a professional Incident Response report while applying industry-standard investigative techniques.
 
-### Investigation Objectives
+My focus was to determine the scope of compromise, validate affected and unaffected hosts using endpoint, process and network evidence, and contribute findings that were incorporated into the final client-ready Incident Response report.
 
-The team investigation aimed to:
+## Contribution at a Glance
 
-1. Determine how the attacker entered the environment.
-2. Identify affected systems.
-3. establish the duration of attacker access.
-4. separate activity associated with different threat actors.
-5. assess the business impact.
-6. recommend containment, recovery and long-term improvements.
-7. produce a report suitable for both technical and non-technical stakeholders.
-
----
-
-## Incident Summary
-
-The incident involved an attacker gaining access through an internet-exposed Remote Desktop Protocol service that lacked multi-factor authentication and account lockout protections.
-
-The investigation determined that:
-
-- Initial access occurred on **28 February 2026**.
-- The attacker remained undetected for approximately **30 days**.
-- The attacker collected credentials, explored the network and installed remote-access tooling.
-- On **30 March 2026**, ransomware was deployed against a contractor workstation.
-- **763 files** were encrypted.
-- Two systems were confirmed as compromised.
-- Five additional systems showed no evidence of compromise.
-- Existing security tools generated suspicious-activity alerts, but those alerts were not reviewed or acted upon.
-- Data theft was not proven, but could not be fully ruled out.
-
-> **Business impact:** The contractor workstation became unusable, credentials across the environment had to be treated as potentially exposed, and the risk of recurrence remained high until remediation was completed.
-
----
-
-## My Role
-
-I worked as the **Scope Assessment Analyst**.
-
-My role was not to perform the entire investigation. Instead, I was responsible for one critical workstream: determining the extent of compromise and establishing which systems were affected or unaffected.
-
-### My Responsibilities
-
-- Validate the scope of compromise.
-- Correlate evidence across multiple telemetry sources.
-- Confirm whether suspicious artefacts were present on candidate systems.
-- Determine whether those artefacts had executed.
-- Check whether systems communicated with known or suspected attacker infrastructure.
-- Distinguish confirmed compromise from unsupported assumptions.
-- Share findings with the wider investigation team.
-- Escalate unexpected artefacts found during analysis.
-- Review the final client-facing report and provide feedback for improvement.
-
-### Why Scope Assessment Matters
-
-Incident scoping affects almost every subsequent decision:
-
-- Which systems must be isolated.
-- Which systems must be rebuilt.
-- Which accounts must be reset.
-- Whether the attacker moved laterally.
-- Whether the organisation can safely restore services.
-- Whether the incident is contained.
-- Whether unrelated malicious activity has been incorrectly attributed.
-
-A weak scope assessment can either miss compromised hosts or unnecessarily expand the response. My aim was to support defensible conclusions using multiple forms of evidence.
-
----
-
-## Team Structure
-
-```mermaid
-flowchart TB
-    Lead["IR Lead<br/>Coordination, synthesis and final report"]
-    Graham["Graham McKean<br/>Scope Assessment Analyst"]
-    Access["Initial Access & Persistence Analyst"]
-    Network["Network Analysis & C2 Analyst"]
-
-    Lead --> Graham
-    Lead --> Access
-    Lead --> Network
-
-    Graham --> Findings["Scope findings and unexpected artefacts"]
-    Access --> Findings
-    Network --> Findings
-
-    Findings --> Final["Integrated incident report"]
-```
-
-### Collaborative Working Model
-
-Each analyst owned a separate investigative area. Findings were shared, challenged and incorporated into the combined report.
-
-My contribution depended on the work of others, and their work also benefited from the scope and attribution findings I escalated. This reflects real incident response, where no single analyst sees the entire incident from one data source or one investigative perspective.
-
----
-
-## Investigation Workflow
-
-```mermaid
-flowchart LR
-    A["Receive assigned workstream"] --> B["Define scope questions"]
-    B --> C["Run KQL hunting queries"]
-    C --> D["Review returned evidence"]
-    D --> E["Validate using multiple telemetry sources"]
-    E --> F{"Evidence of compromise?"}
-    F -->|Yes| G["Document affected host"]
-    F -->|No| H["Document no evidence found"]
-    D --> I{"Unexpected artefact?"}
-    I -->|Yes| J["Escalate to IR Lead and team"]
-    J --> K["Cross-workstream validation"]
-    G --> L["Submit findings"]
-    H --> L
-    K --> L
-    L --> M["Integrated final report"]
-    M --> N["Review and improvement feedback"]
-```
-
----
-
-## Scope Assessment Methodology
-
-The IR Lead described my methodology as a three-check approach. I assessed candidate systems using:
-
-| Validation Check | Question Answered | Example Evidence |
+| My responsibility | What I did | Why it mattered |
 |---|---|---|
-| File presence | Was the suspicious file present on disk? | File events, file path, hash, creation time |
-| Process execution | Did the suspicious file run? | Process creation, parent process, command line, user |
-| Network communication | Did the system communicate with attacker infrastructure? | Remote IP, port, initiating process, timestamp |
+| Establish incident scope | Assessed hosts using file, process and network evidence | Produced defensible compromised/not-observed decisions rather than relying on one alert |
+| Validate findings | Correlated evidence across Microsoft Defender XDR telemetry | Reduced the risk of false conclusions and unsupported assumptions |
+| Investigate unexpected results | Flagged `Synaptics.exe` and `massscan_gui.exe` on the contractor workstation | Helped the team separate additional actor activity from Pay2Key |
+| Communicate conclusions | Documented scope findings, limitations and escalation points | Enabled my findings to be incorporated into the final incident report |
 
-### Three-Source Validation Model
+![My contribution and impact](images/contribution-impact.svg)
 
-```mermaid
-flowchart TD
-    Host["Candidate host"]
-    File["1. File presence"]
-    Process["2. Process execution"]
-    Network["3. Network communication"]
-    Decision{"Combined assessment"}
+## My Role and Responsibility
 
-    Host --> File
-    Host --> Process
-    Host --> Network
+As **Scope Assessment Analyst**, I used a three-check methodology for each relevant host:
 
-    File --> Decision
-    Process --> Decision
-    Network --> Decision
+1. **File presence** — Was a suspicious artefact present on disk?
+2. **Process execution** — Did it execute, and under which user/process context?
+3. **Network communication** — Did the host or process communicate with suspicious infrastructure?
 
-    Decision --> Confirmed["Confirmed compromise"]
-    Decision --> Insufficient["Insufficient evidence"]
-    Decision --> Clean["No evidence of compromise in available telemetry"]
+![My three-check methodology](images/three-check-method.svg)
+
+This approach allowed me to distinguish between:
+
+- confirmed malicious activity;
+- artefact presence without confirmed execution;
+- activity requiring escalation or attribution review; and
+- systems with no evidence of compromise in the available telemetry.
+
+I recorded the supporting evidence and limitations for each conclusion. I did not treat “no evidence found” as proof that compromise was impossible.
+
+## My Standout Finding
+
+While reviewing the scope results, I independently identified `Synaptics.exe` and `massscan_gui.exe` on the contractor workstation. These artefacts were outside the expected Pay2Key pattern and were not part of my original assigned search focus.
+
+I escalated them because they could not safely be attributed to the ransomware actor without further correlation. This contributed to the team separating additional actor activity and avoided incorrectly merging DarkKomet-related behaviour into the Pay2Key attribution.
+
+**Analytical value demonstrated:**
+
+- reading query output beyond the expected indicators;
+- recognising anomalies that did not fit the working hypothesis;
+- maintaining attribution discipline;
+- escalating material findings clearly; and
+- understanding how one incorrect assumption can affect an entire incident narrative.
+
+## My Scope-Assessment Workflow
+
+![My investigation workflow](images/investigation-workflow.svg)
+
+My workflow was:
+
+1. Define relevant devices, timeframe and indicators.
+2. Search for suspicious file presence.
+3. Confirm process execution and user/process context.
+4. Correlate associated network communication.
+5. Compare timestamps and behaviour across hosts.
+6. Record evidence, uncertainty and scope status.
+7. Escalate unexpected artefacts for attribution review.
+8. Provide concise findings for the final report.
+
+## Queries Supporting My Workstream
+
+The supplied client-ready report does not include the original technical appendices, raw telemetry or original case queries. The files below are therefore **portfolio reconstructions** showing how my documented three-check methodology can be implemented in Microsoft Defender XDR Advanced Hunting. They are not presented as verbatim evidence from the case.
+
+| Query | How it supports my contribution |
+|---|---|
+| [01 — File-presence hunt](queries/01-file-presence-hunt.kql) | Identifies whether suspicious artefacts exist across candidate hosts |
+| [02 — Process-execution validation](queries/02-process-execution-validation.kql) | Confirms execution and captures account, command-line and parent-process context |
+| [03 — Network correlation](queries/03-network-correlation.kql) | Tests whether suspicious processes communicated externally |
+| [04 — Host scope matrix](queries/04-host-scope-matrix.kql) | Combines the three checks into a host-by-host assessment view |
+| [Query notes and limitations](queries/README.md) | Explains reconstruction status, assumptions and safe use |
+
+```kusto
+let SuspiciousFiles = dynamic(["Synaptics.exe", "massscan_gui.exe"]);
+DeviceProcessEvents
+| where FileName in~ (SuspiciousFiles)
+| project Timestamp, DeviceName, AccountName, FileName,
+          ProcessCommandLine, InitiatingProcessFileName, SHA256
+| order by Timestamp asc
 ```
 
-### Analytical Principle
+## Evidence of My Work
 
-> A host should not be called compromised or clean on the basis of a single query result. Conclusions should be supported by correlated evidence and clearly state the limits of the available telemetry.
+### Documented contribution
 
----
+The accompanying team review describes my scope assessment as methodical and specifically recognises the three-source validation approach. It also credits my independent identification of `Synaptics.exe` and `massscan_gui.exe` with supporting separation of additional actor activity.
 
-## Key Findings
+### Evidence included in this repository
 
-### Scope Outcome
+- [Client-ready incident report](reports/client-ready-incident-response-report.pdf)
+- [Portfolio summary highlighting my contribution](reports/client-ready-summary.md)
+- [Scope decision template](evidence/scope-matrix-template.csv)
+- [Evidence register template](evidence/evidence-register-template.csv)
+- [Rendered report pages](images/report-evidence/)
+- [Documented methodology diagrams](images/)
 
-| Scope Result | Finding |
-|---|---|
-| Confirmed compromised systems | 2 |
-| Additional systems assessed | 5 |
-| Additional systems with evidence of compromise | 0 |
-| Files encrypted | 763 |
-| Credential risk | All credentials treated as potentially exposed |
-| Overall residual risk | High until remediation |
+The report-page images are genuine images of the supplied client-ready report. The diagrams are derived from the documented investigation and my role; they are not fabricated screenshots of Defender telemetry.
 
-The two compromised systems were:
+## Outcomes of My Contribution
 
-1. **Domain Controller** — used for network access, control and credential collection.
-2. **Contractor Workstation** — used for ransomware deployment and file encryption.
+- Supported confirmation that the **Domain Controller** and **contractor workstation** were compromised.
+- Supported assessment that five additional systems showed **no evidence of compromise in the available telemetry**.
+- Applied a repeatable three-source method to make scope conclusions more defensible.
+- Identified unexpected artefacts that materially improved attribution accuracy.
+- Helped prevent unrelated activity from being incorrectly attributed to Pay2Key.
+- Contributed findings that were incorporated into the final collaborative report.
 
-Five additional systems were assessed and showed no evidence of compromise in the available telemetry.
+![Scope outcome](images/scope-outcome.svg)
 
-### Confidence Statement
+## Challenges I Addressed
 
-The assessment did not rely solely on an absence of alerts. It considered evidence across disk, execution and network telemetry. This strengthened the reliability of the scope conclusion while still recognising that “no evidence found” is not the same as proving that activity was impossible.
+### Avoiding single-source conclusions
+A file may exist without executing, and a process may run without producing obvious network activity. I therefore correlated all three evidence types before reaching a scope decision.
 
----
+### Handling negative findings responsibly
+Five systems showed no evidence of compromise, but available telemetry cannot prove that activity never occurred. I learned to state the evidence boundary clearly instead of describing a host as unconditionally “clean.”
 
-## Independent Findings: Synaptics.exe and massscan_gui.exe
+### Separating overlapping actor activity
+Unexpected artefacts on an already compromised workstation could easily have been folded into the main ransomware narrative. I treated the mismatch as an attribution problem and escalated it.
 
-During review of hunting results on the contractor workstation, I identified two anomalous executables:
-
-- `Synaptics.exe`
-- `massscan_gui.exe`
-
-These artefacts were not the specific focus of my assigned scope-assessment task. I identified them because I reviewed the returned evidence rather than limiting analysis to only the artefacts I expected to find.
-
-### Why This Mattered
-
-The findings were escalated for wider investigation and contributed to the separation of **Actor 3** from the primary Pay2Key activity.
-
-Without that separation, unrelated malicious activity could have been attributed to the ransomware operator, reducing the accuracy of the final report.
-
-### Analytical Significance
-
-| Observation | Significance |
-|---|---|
-| Unexpected executable names appeared in scope-assessment results | Required investigation beyond the original query objective |
-| Artefacts were found on the contractor workstation | Linked the discovery to an already affected system |
-| Activity did not fit the expected Pay2Key pattern | Suggested separate tooling or actor activity |
-| Findings were shared with the team | Enabled cross-workstream validation |
-| Actor 3 was separated in the final report | Improved attribution accuracy |
-
-### Recruiter-Relevant Behaviours Demonstrated
-
-- Curiosity beyond the immediate task.
-- Careful review of query output.
-- Willingness to challenge initial assumptions.
-- Escalation of findings rather than silent interpretation.
-- Understanding that attribution requires corroboration.
-- Contribution to a team outcome beyond assigned minimum requirements.
-
-> **Screenshot placeholder — Synaptics.exe**  
-> Add an annotated Microsoft Defender XDR screenshot showing the relevant process, file or device event.  
-> Annotation should identify the timestamp, device, file path, parent process and why the artefact was anomalous.
-
-> **Screenshot placeholder — massscan_gui.exe**  
-> Add an annotated Microsoft Defender XDR screenshot showing the relevant process or file event.  
-> Annotation should identify the execution context, device, associated user and why the result required escalation.
-
----
-
-## Evidence Flow
-
-```mermaid
-flowchart LR
-    Q["KQL hunting query"]
-    R["Returned events"]
-    T["Timestamp correlation"]
-    D["Device context"]
-    P["Process lineage"]
-    N["Network context"]
-    A["Analyst assessment"]
-    E["Escalation to team"]
-    C["Cross-workstream corroboration"]
-    F["Final report finding"]
-
-    Q --> R
-    R --> T
-    R --> D
-    R --> P
-    R --> N
-    T --> A
-    D --> A
-    P --> A
-    N --> A
-    A --> E
-    E --> C
-    C --> F
-```
-
----
-
-## Attack Timeline
-
-```mermaid
-timeline
-    title Pay2Key Incident Timeline
-    28 February 2026 : Initial access through exposed RDP
-                       : Administrator credentials successfully guessed
-    2 March 2026      : Contractor workstation access identified
-    March 2026        : Credential collection
-                       : Network exploration
-                       : Remote-access tooling installed
-    29 March 2026     : Additional operator activity observed
-                       : Separate actor activity required attribution review
-    30 March 2026     : Recovery features disabled
-                       : Pay2Key ransomware deployed
-                       : 763 files encrypted
-    30 March–12 April 2026 : Collaborative DFIR investigation
-                            : Scope validation and actor separation
-                            : Final report preparation
-```
-
-> **Timeline image placeholder:** Export the Mermaid timeline as PNG or SVG for use in PDF, LinkedIn and portfolio documents where Mermaid is not rendered.
-
----
-
-## Network Layout
-
-The source material identifies seven assessed systems, including a Domain Controller and contractor workstation. The exact names and topology of the remaining systems were not provided in the supplied client-facing report, so the diagram below deliberately avoids inventing unsupported host details.
-
-```mermaid
-flowchart LR
-    Internet["Internet"]
-    RDP["Internet-facing RDP<br/>No MFA / no lockout"]
-    DC["Domain Controller<br/>Confirmed compromised"]
-    CW["Contractor Workstation<br/>Confirmed compromised"]
-    H1["Additional assessed host"]
-    H2["Additional assessed host"]
-    H3["Additional assessed host"]
-    H4["Additional assessed host"]
-    H5["Additional assessed host"]
-    Attacker["Attacker infrastructure"]
-
-    Attacker --> Internet
-    Internet --> RDP
-    RDP --> DC
-    DC --> CW
-    DC --- H1
-    DC --- H2
-    DC --- H3
-    DC --- H4
-    DC --- H5
-```
-
-> **Network diagram placeholder:** Replace generic host labels only when authorised source evidence is available.
-
----
-
-## MITRE ATT&CK Mapping
-
-The following mapping is based only on behaviours described in the supplied incident report. Technique identifiers should be verified against the organisation's preferred ATT&CK version before formal publication.
-
-| Observed Behaviour | Likely ATT&CK Area | Portfolio Interpretation |
-|---|---|---|
-| Internet-exposed RDP used for access | External Remote Services | Initial access through remote access infrastructure |
-| Repeated login attempts | Brute Force / Password Guessing | Weak authentication controls enabled credential compromise |
-| Passwords extracted from memory | OS Credential Dumping | Credentials were collected after access |
-| Remote-access software installed | Remote Access Software | Attacker maintained continued control |
-| Network explored for other systems | Network Service Discovery | Environment reconnaissance and lateral movement preparation |
-| Recovery features disabled | Inhibit System Recovery | Reduced the organisation's ability to restore systems |
-| Files encrypted | Data Encrypted for Impact | Primary ransomware impact |
-| Malicious file removed after execution | Indicator Removal | Reduced directly observable artefacts |
-
-```mermaid
-flowchart TD
-    IA["Initial Access<br/>External remote services"]
-    CA["Credential Access<br/>Password guessing and credential dumping"]
-    DS["Discovery<br/>Network exploration"]
-    PE["Persistence / C2<br/>Remote-access software"]
-    IM["Impact<br/>Recovery inhibition and encryption"]
-    DE["Defence Evasion<br/>Removal of ransomware artefact"]
-
-    IA --> CA
-    CA --> DS
-    DS --> PE
-    PE --> IM
-    IM --> DE
-```
-
----
-
-## Report Improvement Contribution
-
-In addition to my analytical work, I provided feedback to improve the final report for a client audience.
-
-### Improvement Areas
-
-- Clearer executive language.
-- Reduced technical ambiguity.
-- Better separation of findings, impact and recommendations.
-- Improved flow between the attack narrative and business consequences.
-- More accessible explanations for non-technical stakeholders.
-- Actionable remediation organised by urgency.
-- Clear acknowledgment of uncertainty around possible data theft.
-
-### Client-Ready Reporting Structure
-
-| Report Element | Purpose |
-|---|---|
-| Incident overview | Explain what happened without unnecessary technical detail |
-| Key findings | Present decision-relevant facts |
-| Scope of impact | Identify affected systems and business consequences |
-| Root cause | Explain the control failures that enabled the incident |
-| Detection gaps | Show where monitoring and response failed |
-| Risk assessment | Explain residual risk |
-| Recommendations | Prioritise immediate, short-term and long-term action |
-| Recovery summary | Give stakeholders a practical restoration path |
-
-### Example of Technical-to-Business Translation
-
-| Technical Finding | Business-Focused Interpretation |
-|---|---|
-| RDP exposed directly to the internet | Remote access could be attacked from anywhere |
-| No MFA | A guessed password was enough to gain access |
-| No account lockout | Repeated password attempts were not stopped |
-| Alerts were generated but not investigated | Existing security tools detected activity, but operational response failed |
-| Credentials were collected | All passwords should be treated as potentially exposed |
-| Recovery features were disabled | Restoration became harder and slower |
-
----
-
-## Technical Skills Demonstrated
-
-| Skill | Evidence from Project |
-|---|---|
-| Microsoft Defender XDR | Used endpoint and network telemetry during scope assessment |
-| Kusto Query Language | Used hunting queries to identify and validate artefacts |
-| Incident scoping | Distinguished affected from unaffected assets |
-| Evidence correlation | Combined file, process and network evidence |
-| Threat hunting | Reviewed results for expected and unexpected activity |
-| Ransomware investigation | Assessed activity linked to Pay2Key deployment |
-| Threat attribution support | Contributed findings that separated Actor 3 |
-| Technical reporting | Submitted findings for integration into the final report |
-| Executive reporting | Helped improve the client-ready report |
-
----
-
-## Professional Skills Demonstrated
-
-### Collaboration
-
-I worked as one member of a multi-analyst investigation. I had to understand where my responsibilities began and ended, while also recognising when my findings affected another analyst's workstream.
-
-### Ownership
-
-I was responsible for producing a defensible scope assessment rather than waiting for the IR Lead to make host-by-host determinations.
-
-### Communication
-
-Findings had to be described clearly enough that other analysts could validate and use them.
-
-### Initiative
-
-The discovery of `Synaptics.exe` and `massscan_gui.exe` resulted from reading the returned data carefully rather than treating queries as simple pass-or-fail checks.
-
-### Critical Thinking
-
-I considered whether evidence fit the expected Pay2Key activity and escalated artefacts that did not.
-
-### Attention to Detail
-
-Accurate scope and attribution depended on timestamps, processes, devices, paths and network context being interpreted together.
-
-### Constructive Review
-
-I contributed feedback intended to improve the usefulness of the final client-facing report.
-
-### Continuous Improvement
-
-The IR Lead's feedback identified documentation polish as an area for development. I have used that feedback to structure this portfolio around clarity, standalone explanations and evidence-led conclusions.
-
----
-
-## Feedback and Development
-
-### Positive Feedback
-
-The IR Lead described the scope assessment as methodical and highlighted the three-check methodology as a strong example of proving findings across multiple data sources.
-
-The identification of `Synaptics.exe` and `massscan_gui.exe` was recognised as a significant contribution because it helped prevent incorrect attribution of Actor 3 activity to Pay2Key.
-
-### Development Area
-
-The main improvement point was ensuring that the quality of the first written submission matched the quality of the analysis.
-
-For future investigations, I would:
-
-1. Conduct a dedicated peer-style review before submission.
-2. Ensure every query has a clear purpose and explanation.
-3. Define abbreviations and technical terms on first use.
-4. Confirm that each finding stands alone for a reader outside the investigation.
-5. Separate observation, interpretation, confidence and recommendation.
-6. Standardise formatting before final submission.
-
----
-
-## Screenshots and Evidence
-
-The supplied attachments did not contain the original Microsoft Defender XDR screenshots or raw KQL output. To avoid fabricating evidence, the locations below are intentional placeholders.
-
-### Recommended Screenshot Format
-
-Each screenshot should include four callouts:
-
-1. **Observation** — what appears in the evidence.
-2. **Context** — device, timestamp, user and query source.
-3. **Why it matters** — relevance to scope or attribution.
-4. **Conclusion** — what can and cannot be stated from the evidence.
-
-<details>
-<summary><strong>Screenshot 1 — Scope query result</strong></summary>
-
-**Required image:** Microsoft Defender XDR Advanced Hunting result showing one assessed host.
-
-**Required annotations:**
-
-- Device name.
-- Event timestamp.
-- File or process name.
-- Relevant path.
-- Network destination, where applicable.
-- A note explaining whether the result supports compromise, non-compromise or requires further investigation.
-
-**Suggested filename:** `images/scope-query-result.png`
-
-</details>
-
-<details>
-<summary><strong>Screenshot 2 — Synaptics.exe</strong></summary>
-
-**Required image:** Relevant Defender event showing `Synaptics.exe`.
-
-**Required annotations:**
-
-- Device: contractor workstation.
-- Timestamp.
-- File path.
-- Parent process.
-- User or session context.
-- Why the artefact did not fit expected Pay2Key activity.
-- Escalation note: contributed to Actor 3 separation.
-
-**Suggested filename:** `images/synaptics-finding.png`
-
-</details>
-
-<details>
-<summary><strong>Screenshot 3 — massscan_gui.exe</strong></summary>
-
-**Required image:** Relevant Defender event showing `massscan_gui.exe`.
-
-**Required annotations:**
-
-- Device: contractor workstation.
-- Timestamp.
-- File path.
-- Process execution or file-presence evidence.
-- Related network activity, where available.
-- Why the artefact required escalation.
-- Escalation note: contributed to Actor 3 separation.
-
-**Suggested filename:** `images/massscan-gui-finding.png`
-
-</details>
-
-<details>
-<summary><strong>Screenshot 4 — Three-source validation</strong></summary>
-
-**Required images:** A combined or three-panel view showing:
-
-- File presence.
-- Process execution.
-- Network communication.
-
-**Suggested filename:** `images/three-source-validation.png`
-
-</details>
-
----
-
-## Example Evidence Table
-
-| Evidence ID | Device | Evidence Type | Artefact | Observation | Assessment |
-|---|---|---|---|---|---|
-| GM-001 | Contractor workstation | File / process | Synaptics.exe | Unexpected executable identified during hunting | Escalated for actor-separation analysis |
-| GM-002 | Contractor workstation | File / process | massscan_gui.exe | Unexpected scanning-related executable identified | Escalated for actor-separation analysis |
-| GM-003 | Domain Controller | Multi-source | Pay2Key-related activity | File, process or network evidence supported compromise | Confirmed compromised |
-| GM-004 | Additional systems | Multi-source | No corroborated activity | No evidence identified in available telemetry | No evidence of compromise |
-
-> Replace generic entries with authorised timestamps, hashes, paths and query references before public release.
-
----
+### Translating analysis into clear reporting
+My analytical work needed to stand on its own for reviewers who were not present during the investigation. This reinforced the importance of query descriptions, evidence references, formatting and concise conclusions.
 
 ## Lessons Learned
 
-### Technical
+- Scope decisions are strongest when file, process and network evidence agree.
+- Query results must be read for anomalies, not only for expected indicators.
+- “No evidence observed” is more accurate than claiming a system is definitively clean.
+- Attribution requires timestamp, host, account, process and network context.
+- A junior analyst can materially improve an investigation by escalating findings that do not fit.
+- Clear writing and evidence traceability are part of the technical work, not an afterthought.
 
-- Scope conclusions should be based on correlated evidence.
-- Absence of evidence must be described carefully.
-- Unexpected findings can be as important as expected indicators.
-- Attribution should be separated by timestamp, host, tooling and operator context.
-- Security alerts only reduce risk when there is a process to investigate them.
-- Technical findings should be connected to containment and recovery decisions.
+## Tools I Used
 
-### Professional
+| Tool / technology | How I applied it |
+|---|---|
+| Microsoft Defender XDR | Advanced Hunting and endpoint investigation workflow |
+| Microsoft Defender for Endpoint | File, process, device and network telemetry |
+| Kusto Query Language (KQL) | Host-level searching, correlation and scope validation |
+| MITRE ATT&CK | Behaviour and technique context |
+| Evidence registers / scope matrices | Tracking evidence, decisions and limitations |
+| Markdown, HTML and SVG | Communicating my analysis professionally |
 
-- Strong analysis can lose impact if the write-up is unclear.
-- Team members should own their workstream while staying alert to wider implications.
-- Findings should be escalated early when they affect another analyst's conclusions.
-- Constructive report review is part of incident response, not an administrative afterthought.
-- A client report must support decisions, not simply display technical detail.
+## Investigation Context
 
----
+This was a **collaborative simulated investigation**, not a solo project. The wider case involved Pay2Key ransomware, internet-facing RDP, approximately 30 days of undetected access, two compromised systems and 763 encrypted files. Other analysts covered initial access, persistence, network/C2 analysis and malware-related work.
 
-## Recommended Repository Structure
+That wider context is included only to explain where my scope-assessment work fitted. I do not claim ownership of findings produced by the IR Lead or other analysts.
+
+![Documented incident timeline](images/attack-timeline.svg)
+
+## Repository Structure
 
 ```text
 pay2key-scope-assessment/
 ├── README.md
-├── LICENSE
-├── .gitignore
-├── docs/
-│   ├── portfolio.pdf
-│   ├── executive-summary.md
-│   └── methodology.md
+├── docs/index.html
+├── reports/
+│   ├── client-ready-incident-response-report.pdf
+│   └── client-ready-summary.md
 ├── images/
-│   ├── network-layout.svg
-│   ├── attack-timeline.svg
+│   ├── contribution-impact.svg
+│   ├── three-check-method.svg
 │   ├── investigation-workflow.svg
-│   ├── evidence-flow.svg
-│   ├── mitre-mapping.svg
-│   ├── synaptics-finding.png
-│   ├── massscan-gui-finding.png
-│   └── three-source-validation.png
+│   ├── scope-outcome.svg
+│   ├── attack-timeline.svg
+│   └── report-evidence/client-report-page-1.png ... page-4.png
 ├── queries/
-│   ├── README.md
-│   ├── scope-assessment.kql
-│   └── validation-queries.kql
-├── evidence/
-│   ├── evidence-register-template.csv
-│   └── scope-matrix-template.csv
-└── reports/
-    └── client-ready-summary.md
+│   ├── 01-file-presence-hunt.kql
+│   ├── 02-process-execution-validation.kql
+│   ├── 03-network-correlation.kql
+│   ├── 04-host-scope-matrix.kql
+│   └── README.md
+└── evidence/
+    ├── evidence-register-template.csv
+    └── scope-matrix-template.csv
 ```
 
----
+## Interview Summary
 
-## Interview Talking Points
-
-### “What was your role?”
-
-I was the Scope Assessment Analyst within a collaborative ransomware investigation. I owned the workstream responsible for determining which systems were affected and validating that conclusion across file, process and network telemetry.
-
-### “Did you investigate the whole incident?”
-
-No. The investigation was intentionally divided between analysts. My responsibility was scope assessment, while other team members investigated initial access, persistence, network activity and command-and-control. We combined our findings into a single final report.
-
-### “What was your most important contribution?”
-
-While reviewing scope-assessment results, I identified `Synaptics.exe` and `massscan_gui.exe` on the contractor workstation. Those artefacts were outside the immediate question I had been assigned, but they did not fit the expected Pay2Key activity. Escalating them helped the team separate Actor 3 and avoid incorrect attribution.
-
-### “What did you learn?”
-
-I learned that good incident response depends on both technical accuracy and clear communication. My analysis was positively reviewed, but I was advised to improve the polish of first-draft submissions. I have used that feedback to improve structure, clarity and standalone explanations.
-
-### “What soft skills did you demonstrate?”
-
-Collaboration, ownership, initiative, analytical thinking, evidence-based decision-making, attention to detail, technical communication, constructive review and continuous improvement.
-
----
+> As Scope Assessment Analyst in a collaborative Pay2Key ransomware investigation, I assessed hosts using file-presence, process-execution and network-communication evidence in Microsoft Defender XDR. While reviewing the results, I independently identified unexpected artefacts that did not fit the Pay2Key pattern. Escalating those findings helped the team separate additional actor activity and protected the accuracy of the final attribution. My scope conclusions and supporting evidence contributed to the final client-ready incident response report.
 
 ## Ethics and Disclosure
 
-- This repository is a portfolio case study based on a simulated cyber investigation.
-- Sensitive or identifying information should be sanitised before publication.
-- Screenshots must not expose credentials, tokens, personal data or confidential infrastructure details.
-- Hashes, IP addresses and domain names should be defanged where appropriate.
-- Placeholder content should not be replaced with invented evidence.
-- Any public version should clearly distinguish observed evidence from analyst interpretation.
-
----
+- This portfolio is based on a simulated collaborative investigation.
+- My individual contribution is distinguished from wider team findings.
+- Report images reproduce the supplied client-ready report.
+- KQL files are labelled reconstructions because original telemetry and technical appendices were not supplied.
+- No credentials, personal data, confidential infrastructure or fabricated telemetry are included.
 
 ## Author
 
 **Graham McKean**  
-Scope Assessment Analyst  
-Cybersecurity | SOC Analysis | DFIR | Threat Hunting | Incident Response
-
----
-
-## Acknowledgement
-
-This was a collaborative investigation. The final outcome reflected contributions from the IR Lead and analysts responsible for scope assessment, initial access, persistence, network analysis and command-and-control investigation.
+Junior SOC Analyst candidate | SOC Analysis | DFIR | Threat Hunting | Incident Response

@@ -1,0 +1,8 @@
+// Portfolio reconstruction: correlates suspicious processes with outbound connections.
+let SuspiciousFiles = dynamic(["Synaptics.exe", "massscan_gui.exe"]);
+DeviceNetworkEvents
+| where Timestamp between (datetime(2026-02-28) .. datetime(2026-03-31))
+| where InitiatingProcessFileName in~ (SuspiciousFiles)
+| project Timestamp, DeviceName, InitiatingProcessFileName, RemoteIP, RemotePort,
+          RemoteUrl, Protocol, InitiatingProcessAccountName
+| order by Timestamp asc

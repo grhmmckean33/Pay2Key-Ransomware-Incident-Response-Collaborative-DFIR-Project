@@ -1,0 +1,22 @@
+// Portfolio reconstruction: creates a host-level summary across three evidence sources.
+let start=datetime(2026-02-28);
+let end=datetime(2026-03-31);
+let Indicators=dynamic(["Synaptics.exe", "massscan_gui.exe"]);
+let Files = DeviceFileEvents
+| where Timestamp between (start .. end) and FileName in~ (Indicators)
+| summarize FileEvidence=count() by DeviceName;
+let Processes = DeviceProcessEvents
+| where Timestamp between (start .. end) and FileName in~ (Indicators)
+| summarize ProcessEvidence=count() by DeviceName;
+let Network = DeviceNetworkEvents
+| where Timestamp between (start .. end) and InitiatingProcessFileName in~ (Indicators)
+| summarize NetworkEvidence=count() by DeviceName;
+Files
+| join kind=fullouter Processes on DeviceName
+| join kind=fullouter Network on DeviceName
+| extend Device=coalesce(DeviceName, DeviceName1, DeviceName2),
+         FileEvidence=coalesce(FileEvidence,0), ProcessEvidence=coalesce(ProcessEvidence,0),
+         NetworkEvidence=coalesce(NetworkEvidence,0)
+| project Device, FileEvidence, ProcessEvidence, NetworkEvidence
+| extend EvidenceChecks = toint(FileEvidence>0)+toint(ProcessEvidence>0)+toint(NetworkEvidence>0)
+| order by EvidenceChecks desc

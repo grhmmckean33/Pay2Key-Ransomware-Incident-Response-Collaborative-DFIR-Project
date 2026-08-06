@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+<title id="title">Graham McKean scope assessment contribution and impact</title>
+<desc id="desc">A four-stage flow from host scoping through evidence correlation and anomaly escalation to improved attribution.</desc>
+<style>.bg{fill:#f5f8fc}.box{fill:#fff;stroke:#2457a6;stroke-width:3}.head{font:700 25px system-ui;fill:#172033}.body{font:18px system-ui;fill:#465268}.arrow{stroke:#2457a6;stroke-width:5;fill:none;marker-end:url(#m)}.label{font:700 18px system-ui;fill:#2457a6}</style>
+<defs><marker id="m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2457a6"/></marker></defs>
+<rect class="bg" width="1200" height="520" rx="24"/>
+<text class="head" x="600" y="58" text-anchor="middle">My Scope-Assessment Contribution</text>
+<rect class="box" x="45" y="125" width="240" height="235" rx="18"/><text class="head" x="165" y="168" text-anchor="middle">1. Scope Hosts</text><text class="body" x="68" y="213">• Define devices</text><text class="body" x="68" y="247">• Set timeframe</text><text class="body" x="68" y="281">• Track indicators</text><text class="body" x="68" y="315">• Record limitations</text>
+<path class="arrow" d="M290 242H345"/>
+<rect class="box" x="350" y="125" width="240" height="235" rx="18"/><text class="head" x="470" y="168" text-anchor="middle">2. Correlate</text><text class="body" x="373" y="213">• File presence</text><text class="body" x="373" y="247">• Process execution</text><text class="body" x="373" y="281">• Network activity</text><text class="body" x="373" y="315">• User/time context</text>
+<path class="arrow" d="M595 242H650"/>
+<rect class="box" x="655" y="125" width="240" height="235" rx="18"/><text class="head" x="775" y="168" text-anchor="middle">3. Challenge</text><text class="body" x="678" y="213">Unexpected:</text><text class="body" x="678" y="247">Synaptics.exe</text><text class="body" x="678" y="281">massscan_gui.exe</text><text class="body" x="678" y="315">Escalate mismatch</text>
+<path class="arrow" d="M900 242H955"/>
+<rect class="box" x="960" y="125" width="195" height="235" rx="18"/><text class="head" x="1058" y="168" text-anchor="middle">4. Impact</text><text class="body" x="980" y="213">Separate actor</text><text class="body" x="980" y="247">activity</text><text class="body" x="980" y="281">Improve attribution</text><text class="body" x="980" y="315">Support report</text>
+<text class="label" x="600" y="430" text-anchor="middle">Outcome: more defensible scope decisions and reduced risk of incorrect attribution</text>
+</svg>
