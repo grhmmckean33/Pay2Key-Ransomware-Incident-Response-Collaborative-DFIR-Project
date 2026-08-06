@@ -7,7 +7,7 @@
 **Environment:** Microsoft Defender for Endpoint / Microsoft Defender XDR  
 **Core skills:** KQL, incident scoping, threat hunting, evidence correlation, attribution discipline
 
-[View the portfolio website](https://YOUR-USERNAME.github.io/YOUR-REPOSITORY/) | [Open the final team report](reports/IR-2026-001-Pay2Key-Final-Report.pdf)
+[View the portfolio website](https://grhmmckean33.github.io/pay2key-scope-assessment//) | [Open the final team report](reports/IR-2026-001-Pay2Key-Final-Report.pdf)
 
 > Replace `YOUR-USERNAME` and `YOUR-REPOSITORY` after uploading. GitHub Pages should be configured to deploy from `main` and `/docs`.
 
