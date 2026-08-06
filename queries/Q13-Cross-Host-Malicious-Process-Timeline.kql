@@ -1,0 +1,8 @@
+// Q13 - Cross-Host Malicious Process Timeline
+// Purpose: correlate malicious execution across the two confirmed compromised hosts.
+DeviceProcessEvents
+| where FileName in~ ("mimikatz.exe","pscan241.exe","3.exe",
+  "procdump.exe","netscan.exe","masscan.exe","sfx-i386-amd64.exe",
+  "browser.exe","shellcode.exe")
+| project Timestamp, DeviceName, FileName, InitiatingProcessFileName, AccountName
+| sort by Timestamp asc

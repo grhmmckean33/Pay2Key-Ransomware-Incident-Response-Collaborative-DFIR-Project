@@ -1,0 +1,9 @@
+// Q2 - Scope Assessment Across All Devices
+// Purpose: check all seven devices for execution of known malicious binaries.
+DeviceProcessEvents
+| where Timestamp between (datetime(2026-02-25 00:00:00) .. datetime(2026-03-30 00:00:00))
+| where FileName in ("svchost.com","sfx-i386-amd64.exe","Synaptics.exe",
+  "massscan_gui.exe","3.exe","mimikatz.exe","onedrivesetup.exe",
+  "browser.exe","pscan241.exe","procdump.exe","netscan.exe")
+| summarize EventCount=count() by DeviceName, FileName
+| sort by DeviceName asc
