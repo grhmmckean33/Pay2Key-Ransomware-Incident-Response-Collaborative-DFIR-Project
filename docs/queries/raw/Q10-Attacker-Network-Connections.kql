@@ -1,0 +1,11 @@
+// Q10 - Attacker Network Connections (Filtered)
+// Purpose: reduce common infrastructure noise and isolate suspicious public connections.
+DeviceNetworkEvents
+| where DeviceName contains "mts-contractorpc1"
+| where Timestamp between (datetime(2026-03-25 08:00:00) .. datetime(2026-03-30 14:37:00))
+| where RemoteIPType == "Public"
+| where InitiatingProcessFileName !in ("svchost.exe","monagentcore.exe",
+  "monagentmanager.exe","waappagent.exe","windowsazureguestagent.exe",
+  "mpdefendercoreservice.exe")
+| summarize ConnectionCount=count() by RemoteIP, RemotePort, InitiatingProcessFileName
+| sort by ConnectionCount desc

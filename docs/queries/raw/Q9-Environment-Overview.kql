@@ -1,0 +1,6 @@
+// Q9 - Environment Overview
+// Purpose: validate MDE onboarding and visibility across the environment.
+DeviceInfo
+| summarize arg_max(Timestamp, *) by DeviceName
+| project DeviceName, OSPlatform, OnboardingStatus
+| sort by DeviceName asc

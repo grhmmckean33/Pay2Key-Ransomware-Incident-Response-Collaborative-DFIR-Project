@@ -1,0 +1,6 @@
+// Q15 - DarkKomet C2 Connection (Actor 3)
+// Purpose: validate the separate DarkKomet callback identified during scope review.
+DeviceNetworkEvents
+| where RemoteIP == "69.42.215.252"
+| project Timestamp, DeviceName, RemotePort, InitiatingProcessFileName, ActionType
+| sort by Timestamp asc

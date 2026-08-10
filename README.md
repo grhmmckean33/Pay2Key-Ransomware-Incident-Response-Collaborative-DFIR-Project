@@ -7,7 +7,8 @@
 **Environment:** Microsoft Defender for Endpoint / Microsoft Defender XDR  
 **Core skills:** KQL, incident scoping, threat hunting, evidence correlation, attribution discipline
 
-[View the portfolio website](https://grhmmckean33.github.io/pay2key-scope-assessment//) | [Open the final team report](reports/IR-2026-001-Pay2Key-Final-Report.pdf)
+[View the portfolio website](https://grhmmckean33.github.io/pay2key-scope-assessment/) | [Open the final team report](reports/IR-2026-001-Pay2Key-Final-Report.pdf)
+
 
 ## Project context
 
